@@ -1,11 +1,55 @@
 ---
-title: How to create SVG-ready icon symbols in Sketch PART 1
-description: "Consider that for a moment: everything we see around us is assumed to have had a cause and is contingent upon."
-date: May 4 2021
+title: 服务器环境的配置
+description: "新购买的服务器的环境配置，并且再次进行数据迁移。"
+date: April 4 2022
 ---
 
-This is an example post, with a [link](https://nextjs.org) and a React component:
+新购买的服务器的环境配置
 
-The title and description are pulled from the MDX file and processed using `gray-matter`. Additionally, links are rendered using a custom component passed to `next-mdx-remote`.
+修改主机名
+[root@VM-0-16-centos ~]# hostnamectl set-hostname jimyag
+[root@VM-0-16-centos ~]# vim /etc/hosts
+127.0.0.1 jimyag
+127.0.0.1 localhost.localdomain localhost
+127.0.0.1 localhost4.localdomain4 localhost4
 
-Go back [home](/).
+::1 jimyag jimyag
+::1 localhost.localdomain localhost
+::1 localhost6.localdomain6 localhost6
+[root@VM-0-16-centos ~]# reboot
+SHELL
+更新源
+yum update
+SHELL
+安装docker
+yum install -y yum-utils \
+  device-mapper-persistent-data \
+  lvm2
+SHELL
+sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+sudo yum makecache fast
+SHELL
+yum install -y docker-ce
+SHELL
+systemctl start docker.service
+SHELL
+systemctl enable docker.service
+SHELL
+curl -L https://get.daocloud.io/docker/compose/releases/download/1.25.4/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+SHELL
+chmod +x /usr/local/bin/docker-compose
+SHELL
+go环境安装
+在Linux安装Go环境 | 步履不停 (jimyag.cn)
+
+git配置.配置一个用于提交代码的用户，输入指令：
+git config –global user.name “Your Name” 同时配置一个用户的邮箱，输入命令：
+
+git config --global user.email "email@example.com"
+SHELL
+生成公钥和私钥（用于github）
+
+ssh-keygen -t rsa -C "youremail@example.com"
+SHELL
+参考
+DaoCloud | Docker 极速下载
